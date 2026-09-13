@@ -1,8 +1,8 @@
 import os
 
-# Répertoires par défaut
-LOCAL_DIRECTORY_WINDOWS = "C:\\Users\\Gamme\\Downloads"  # Dossier local pour le download sur Windows
-REMOTE_DIRECTORY = "/home/serveur/downloads"  # Dossier distant pour le download/upload
+# default directories
+LOCAL_DIRECTORY_WINDOWS = "C:\\Users\\%USERNAME%\\Downloads"  # local folder for the windows download
+REMOTE_DIRECTORY = "/home/serveur/downloads"  # remote folder for download/upload
 
 def create_session(session_name):
     os.system(f'tmux new-session -d -s {session_name}')
@@ -19,16 +19,16 @@ def kill_session(session_name):
     print(f"Session '{session_name}' terminée.")
 
 def upload_file(local_path):
-    """Upload un fichier depuis Windows vers le serveur Linux."""
+    """Upload a file from Windows to the Linux server."""
     file_name = os.path.basename(local_path)
     remote_path = os.path.join(REMOTE_DIRECTORY, file_name)
     
     # Commande SCP pour l'upload
     os.system(f'scp {local_path} user@server_ip:{remote_path}')
-    print(f"Fichier {file_name} uploadé vers {remote_path} sur le serveur.")
+    print(f"File {file_name} uploaded to {remote_path} on the server.")
 
 def download_file(file_name):
-    """Télécharge un fichier depuis le serveur Linux vers le dossier 'Download' de Windows."""
+    """downloads a file from the Linux server to the Windows 'Download' folder."""
     remote_path = os.path.join(REMOTE_DIRECTORY, file_name)
     local_path = os.path.join(LOCAL_DIRECTORY_WINDOWS, file_name)
     
@@ -49,7 +49,7 @@ def show_help():
 
 def menu():
     while True:
-        print("\n--- Menu des Sessions ---")
+        print("\n--- Session Menu. ---")
         print("1. Créer une session")
         print("2. Lister les sessions")
         print("3. Attacher à une session")
@@ -57,31 +57,31 @@ def menu():
         print("7. Help (Commandes utiles)")
         print("8. Quitter")
         
-        choice = input("Choix : ")
+        choice = input("Choice : ")
         
         if choice == '1':
-            session_name = input("Nom de la session : ")
+            session_name = input("Session name : ")
             create_session(session_name)
         elif choice == '2':
             list_sessions()
         elif choice == '3':
-            session_name = input("Nom de la session à attacher : ")
+            session_name = input("Name of the session to attach : ")
             attach_session(session_name)
         elif choice == '4':
-            session_name = input("Nom de la session à terminer : ")
+            session_name = input("Name of the session to end : ")
             kill_session(session_name)
         elif choice == '5':
-            file_path = input("Chemin complet du fichier à uploader (depuis Windows) : ")
+            file_path = input("Full path to the file to upload (from Windows): ")
             upload_file(file_path)
         elif choice == '6':
-            file_name = input("Nom du fichier à télécharger (depuis le serveur) : ")
+            file_name = input("Name of the file to download (from the server) : ")
             download_file(file_name)
         elif choice == '7':
             show_help()
         elif choice == '8':
             break
         else:
-            print("Choix invalide. Réessayez.")
+            print("Invalid choice. Please retry.")
 
 if __name__ == "__main__":
     menu()
