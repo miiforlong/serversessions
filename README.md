@@ -1,4 +1,4 @@
-a## server sessions
+## server sessions
 simple TMUX ui
 
 program dependencies : 
